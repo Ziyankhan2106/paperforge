@@ -1,0 +1,98 @@
+{
+"title": "Host attachment and fluid shear are integrated into a mechanical signal regulating virulence in Escherichia coli O157:H7",
+"authors": [
+{
+"name": "Ghadah Alsharif",
+"affiliation": "University of Birmingham"
+},
+{
+"name": "Anne Marie Krachler",
+"affiliation": "University of Birmingham"
+}
+],
+"content": [
+{
+"type": "section",
+"title": "Introduction",
+"content": [
+{
+"type": "paragraph",
+"text": "Enterohemorrhagic Escherichia coli (EHEC) O157:H7 is a significant foodborne pathogen that causes severe disease, including hemorrhagic colitis and hemolytic uremic syndrome [@Doe2024]. While the chemical signals triggering virulence are well-studied, the role of physical cues during host colonization remains less understood."
+},
+{
+"type": "paragraph",
+"text": "We report that EHEC perceives attachment to host cells as a mechanical cue, transduced via the LEE-encoded regulators Ler and GrlA. This signal is further enhanced by fluid shear forces, similar to peristaltic forces in the intestinal tract, allowing the pathogen to fine-tune virulence activation in response to its host's physiology."
+}
+]
+},
+{
+"type": "section",
+"title": "Results",
+"content": [
+{
+"type": "subsection",
+"title": "Attachment-Dependent Induction",
+"content": [
+{
+"type": "paragraph",
+"text": "Using PLEE1-gfp reporter strains, we observed that bacteria attached to HeLa epithelial cells showed strong LEE1 promoter activation. In contrast, bacteria adsorbed to glass slides showed low fluorescence, indicating that ler induction is specifically enhanced upon host cell contact."
+},
+{
+"type": "equation",
+"math": "PLEE1_(" + "active" + ") >> PLEE1_(" + "static" + ")"
+},
+{
+"type": "paragraph",
+"text": "This induction was found to be GrlA-dependent, as ΔgrlA strains failed to show significant promoter activity even when attached. Population-level analysis confirmed that host attachment precedes and acts as the primary cue for LEE1 induction rather than stochastic activation [@Smith2023]."
+}
+]
+},
+{
+"type": "subsection",
+"title": "Effect of Fluid Shear",
+"content": [
+{
+"type": "paragraph",
+"text": "Exposure of substrate-immobilized bacteria to increasing levels of fluid shear (0.1–10 dynes/cm2) caused a further increase in LEE1 promoter activity. This behavior was independent of the specific attachment mechanism, suggesting a general mechanosensitive response."
+},
+{
+"type": "table",
+"columns": 3,
+"caption": "LEE1 Induction Levels Under Shear Stress",
+"headers": ["Condition", "Shear Force (dynes/cm2)", "Fluorescence (AFU)"],
+"data": [
+["Static", "0", "4800"],
+["Low Flow", "1", "12000"],
+["High Flow", "10", "17000"]
+]
+}
+]
+}
+]
+},
+{
+"type": "section",
+"title": "Discussion",
+"content": [
+{
+"type": "paragraph",
+"text": "Our data suggest that full activation of EHEC virulence requires two components of mechanosensation: direct host cell contact and enhancement by fluid shear. This mechanism ensures that the complex arsenal of virulence factors is only fully expressed once the pathogen has reached its dedicated niche in the intestinal tract."
+},
+{
+"type": "paragraph",
+"text": "Let $F$ be the total mechanical force sensed by the cell, where $F = F_(" + "attachment" + ") + F_(" + "shear" + ")$. The system remains stable until a threshold $T$ is met, triggering the Ler-GrlA regulatory circuitry."
+}
+]
+}
+],
+"references": [
+{
+"id": "Doe2024",
+"citation": "G. Alsharif, et al., *Host attachment and fluid shear are integrated into a mechanical signal*, PNAS, 2015."
+},
+{
+"id": "Smith2023",
+"citation": "A. M. Krachler, *Mechanoperception in Microbial Pathogens*, Journal of Biosciences, 2024."
+}
+]
+}

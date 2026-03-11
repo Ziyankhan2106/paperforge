@@ -1,0 +1,132 @@
+{
+  "title": "Neuro-Symbolic JSON: Bridging Structured Data and Typst Generation for NLP Venues",
+  "authors": [
+    {
+      "name": "Alice Doe",
+      "affiliation": "University of Typst"
+    },
+    {
+      "name": "Bob Smith",
+      "affiliation": "Institute of Automation"
+    }
+  ],
+  "abstract": "The formatting of natural language processing (NLP) research papers has traditionally relied on complex LaTeX templates. In this paper, we propose a novel, intermediate JSON-based schema that maps cleanly to Typst, a modern typesetting engine. We demonstrate that structuring documents in this machine-readable format allows for seamless programmatic generation of ACL-compliant PDFs without sacrificing typographical quality. Our experimental results show a 4x reduction in compilation time compared to standard pipelines.",
+  "content": [
+    {
+      "type": "section",
+      "title": "Introduction",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "The Association for Computational Linguistics (ACL) requires strict adherence to two-column formatting guidelines. Historically, authors have used LaTeX, which, while powerful, is notoriously difficult to parse programmatically [@Smith2023]."
+        },
+        {
+          "type": "paragraph",
+          "text": "To address this, we introduce a JSON-driven typesetting pipeline. By treating the document as an abstract syntax tree (AST) serialized in JSON, we can trivially validate structural constraints before generating the final Typst markup."
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Methodology",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Our system accepts a predefined JSON schema. Nodes in the JSON represent semantic document blocks—such as paragraphs, equations, figures, and tables—which are then recursively compiled."
+        },
+        {
+          "type": "subsection",
+          "title": "Mathematical Rendering",
+          "content": [
+            {
+              "type": "paragraph",
+              "text": "Typst handles mathematical notation natively. We define our primary loss function $L$ in the following equation:"
+            },
+            {
+              "type": "equation",
+              "math": "L(theta) = - 1/N sum_(i=1)^N log P(y_i | x_i; theta) + lambda ||theta||^2"
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Pipeline Architecture",
+          "content": [
+            {
+              "type": "paragraph",
+              "text": "The data flows from a raw text generator, into the JSON formatter, and finally to the Typst compiler as illustrated below."
+            },
+            {
+              "type": "image",
+              "src": "diagram.png",
+              "caption": "Figure 1: The end-to-end JSON to Typst compilation pipeline. The intermediate representation ensures valid AST generation.",
+              "width": "100%"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Experiments & Results",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "We compared our JSON-to-Typst approach against a traditional scripted JSON-to-LaTeX pipeline. We measured both compilation speed and formatting accuracy across 500 automatically generated papers."
+        },
+        {
+          "type": "table",
+          "columns": 3,
+          "caption": "Table 1: Performance comparison of compilation methods.",
+          "headers": [
+            "Method",
+            "Avg. Compilation Time (ms)",
+            "Success Rate"
+          ],
+          "data": [
+            [
+              "LaTeX Template",
+              "1450",
+              "92.4%"
+            ],
+            [
+              "Proposed Typst Pipeline",
+              "320",
+              "99.8%"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Limitations",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "While our JSON schema handles the vast majority of standard NLP paper structures, it currently lacks support for highly complex, spanning multi-page tables and custom inline graphics (such as TikZ equivalents). Authors requiring deep, pixel-perfect manual overrides may find the strict schema restrictive."
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Conclusion",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "We have presented a robust, JSON-first approach to typesetting ACL papers. By separating the content's structural representation from its visual rendering, we enable faster, safer, and highly automated document generation [@Doe2024]."
+        }
+      ]
+    }
+  ],
+  "references": [
+    {
+      "id": "Doe2024",
+      "citation": "Alice Doe. 2024. The Art of Typst: Next Generation Typesetting. In Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics, pages 102-110, Bangkok, Thailand."
+    },
+    {
+      "id": "Smith2023",
+      "citation": "Bob Smith. 2023. Automating Document Generation for NLP. Journal of Code and Linguistics, 15(4):45-59."
+    }
+  ]
+}

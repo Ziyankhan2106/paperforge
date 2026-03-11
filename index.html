@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IdeaOverflow - Research Paper Editor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>IdeaOverflow</h1>
+                <p>Create and Edit Research Papers with AI Assistance</p>
+            </div>
+
+            <div class="login-content">
+                <div class="form-group">
+                    <label for="projectName">Project Name:</label>
+                    <input type="text" id="projectName" placeholder="e.g., My Research Paper" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="paperType">Paper Type:</label>
+                    <select id="paperType" required>
+                        <option value="">-- Select Type --</option>
+                        <option value="1">Single Column (NeurIPS)</option>
+                        <option value="2">Double Column (CVPR)</option>
+                    </select>
+                </div>
+
+                <div class="button-group">
+                    <button id="startBlankBtn" class="btn btn-primary">Start Blank Project</button>
+                    <button id="uploadDocxBtn" class="btn btn-secondary">Upload DOCX</button>
+                </div>
+
+                <input type="file" id="docxFile" accept=".docx" style="display: none;">
+            </div>
+
+            <div id="loginError" class="error-message"></div>
+            <div id="loginLoading" class="loading-spinner" style="display: none;">
+                <div class="spinner"></div>
+                <p>Processing your request...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Editor Page -->
+    <div id="editorPage" class="page">
+        <!-- Header -->
+        <header class="editor-header">
+            <div class="header-left">
+                <h2 id="editorTitle">IdeaOverflow Editor</h2>
+                <p id="projectInfo"></p>
+            </div>
+            <div class="header-right">
+                <button id="compileBtn" class="btn btn-success">Compile PDF</button>
+                <button id="reviewBtn" class="btn btn-info">Review Paper</button>
+                <button id="saveBtn" class="btn btn-primary">Save</button>
+                <button id="logoutBtn" class="btn btn-outline">Logout</button>
+            </div>
+        </header>
+
+        <div class="editor-container">
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <button id="addSectionBtn" class="tool-btn" title="Add Section">
+                    <span>+ Section</span>
+                </button>
+                <button id="addSubsectionBtn" class="tool-btn" title="Add Subsection">
+                    <span>+ Subsection</span>
+                </button>
+                <button id="addSubsubsectionBtn" class="tool-btn" title="Add Subsubsection">
+                    <span>+ Subsubsection</span>
+                </button>
+                <button id="addTableBtn" class="tool-btn" title="Add Table">
+                    <span>+ Table</span>
+                </button>
+                <button id="addImageBtn" class="tool-btn" title="Add Image">
+                    <span>+ Image</span>
+                </button>
+                <button id="rephraseBtn" class="tool-btn" title="Rephrase Selected Text">
+                    <span>✨ Rephrase</span>
+                </button>
+            </div>
+
+            <!-- Main Editor -->
+            <div class="editor-main">
+                <!-- Left Panel - Structure -->
+                <div class="editor-panel left-panel">
+                    <h3>Document Structure</h3>
+                    <div id="documentStructure" class="structure-tree">
+                        <!-- Structure will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Middle Panel - Content Editor -->
+                <div class="editor-panel middle-panel">
+                    <div class="content-editor" id="contentEditor">
+                        <!-- Title -->
+                        <div class="editor-section title-section">
+                            <input type="text" id="titleInput" class="title-input" placeholder="Enter paper title...">
+                        </div>
+
+                        <!-- Authors -->
+                        <div class="editor-section authors-section">
+                            <h4>Authors</h4>
+                            <div id="authorsContainer"></div>
+                            <button id="addAuthorBtn" class="btn btn-sm">+ Add Author</button>
+                        </div>
+
+                        <!-- Abstract -->
+                        <div class="editor-section abstract-section">
+                            <h4>Abstract</h4>
+                            <textarea id="abstractInput" class="text-input" placeholder="Enter abstract..."></textarea>
+                        </div>
+
+                        <!-- Sections Content -->
+                        <div id="sectionsContainer">
+                            <!-- Sections will be populated here -->
+                        </div>
+
+                        <!-- References -->
+                        <div class="editor-section references-section">
+                            <h4>References</h4>
+                            <div id="referencesContainer"></div>
+                            <button id="addReferenceBtn" class="btn btn-sm">+ Add Reference</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Properties -->
+                <div class="editor-panel right-panel">
+                    <h3>Properties</h3>
+                    <div id="propertiesPanel" class="properties-content">
+                        <p>Select an element to view its properties</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Section Modal -->
+    <div id="addSectionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Section</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="sectionTitle">Section Title:</label>
+                    <input type="text" id="sectionTitle" placeholder="e.g., Introduction" required>
+                </div>
+                <div class="form-group">
+                    <label for="sectionContent">Content:</label>
+                    <textarea id="sectionContent" placeholder="Enter section content..." rows="6"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary cancel-btn">Cancel</button>
+                <button id="confirmAddSection" class="btn btn-primary">Add Section</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Subsection Modal -->
+    <div id="addSubsectionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Subsection</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="parentSection">Parent Section:</label>
+                    <select id="parentSection" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="subsectionTitle">Subsection Title:</label>
+                    <input type="text" id="subsectionTitle" placeholder="e.g., Data Collection" required>
+                </div>
+                <div class="form-group">
+                    <label for="subsectionContent">Content:</label>
+                    <textarea id="subsectionContent" placeholder="Enter subsection content..." rows="6"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary cancel-btn">Cancel</button>
+                <button id="confirmAddSubsection" class="btn btn-primary">Add Subsection</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rephrase Modal -->
+    <div id="rephraseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Rephrase Text</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="rephraseStyle">Style:</label>
+                    <select id="rephraseStyle">
+                        <option value="academic">Academic</option>
+                        <option value="simpler">Simpler</option>
+                        <option value="concise">Concise</option>
+                        <option value="elaborate">Elaborate</option>
+                        <option value="fluent">Fluent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Original Text:</label>
+                    <div id="originalText" style="padding: 10px; background: #f5f5f5; border-radius: 4px; margin-bottom: 10px;"></div>
+                </div>
+                <div class="form-group">
+                    <label>Rephrased Text:</label>
+                    <textarea id="rephrasedText" readonly rows="6" style="background: #f9f9f9;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary cancel-btn">Cancel</button>
+                <button id="confirmRephrase" class="btn btn-primary">Use This</button>
+                <button id="generateRephrase" class="btn btn-info">Generate</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h3>Paper Review</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body review-content" id="reviewContent">
+                <!-- Review will be populated here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary cancel-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compilation Status Modal -->
+    <div id="compilationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Compilation Status</h3>
+            </div>
+            <div class="modal-body">
+                <div id="compilationStatus" class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Compiling your paper to PDF...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

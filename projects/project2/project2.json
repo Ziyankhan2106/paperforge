@@ -1,0 +1,327 @@
+{
+  "metadata": {
+    "title": "FedChain: Blockchain-assisted Federated Learning Framework for Secure Resource Allocation in Device-to-Device Communication",
+    "authors": [
+      {
+        "name": "Ziyankhan Pathan",
+        "affiliation": "Institute of Technology, Nirma University",
+        "email": "24bce146@nirmauni.ac.in"
+      },
+      {
+        "name": "Mohammad S. Obaidat",
+        "affiliation": "The University of Jordan / UST Beijing / SRM University",
+        "email": "msobaidat@gmail.com"
+      },
+      {
+        "name": "Trupesh Patel",
+        "affiliation": "Institute of Technology, Nirma University",
+        "email": "24ptphde285@nirmauni.ac.in"
+      },
+      {
+        "name": "Sudeep Tanwar",
+        "affiliation": "Institute of Technology, Nirma University",
+        "email": "sudeep.tanwar@nirmauni.ac.in"
+      }
+    ],
+    "keywords": [
+      "Resource allocation",
+      "federated learning",
+      "IPFS",
+      "D2D communication",
+      "model aggregation",
+      "Hyperledger Fabric"
+    ]
+  },
+  "abstract": "In this paper, we propose FedChain, a secure and decentralized blockchain-enabled federated learning (FL) framework for resource allocation (RA) in device-to-device (D2D) communication networks. Traditional D2D RA methods are based on centralized processing, which introduces privacy risks, single-point failures, and limited scalability. FedChain integrates a permissioned Hyperledger Fabric (HF) blockchain to provide traceable, auditable, and tamper-proof model update transactions. The framework applies federated averaging (FedAvg) for collaborative model aggregation without exposing raw data, achieving >95% global accuracy using Random Forest (RF) and XGBoost algorithms.",
+  "content": [
+
+    {
+      "type": "section",
+      "number": "1",
+      "title": "Introduction",
+      "id": "sec:introduction"
+    },
+    {
+      "type": "paragraph",
+      "text": "Device-to-device (D2D) communication has become an essential component in next-generation wireless networks due to its ability to enhance spectrum utilization, reduce end-to-end latency, and support high data-rate applications at the network edge. Effective resource allocation (RA) in D2D systems is crucial for maintaining link reliability and interference control."
+    },
+    {
+      "type": "paragraph",
+      "text": "The key contributions in this paper are:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "We propose FedChain, a secure, decentralized blockchain-integrated federated learning framework that eliminates central trust and single-point failure in D2D RA.",
+        "We employ IPFS for off-chain model parameter storage, recording only CIDs on HF to ensure scalability, integrity, and low communication overhead.",
+        "We integrated FedAvg for collaborative training, achieving >95% global accuracy from XGBoost and RF models while improving robustness, privacy protection, and convergence stability."
+      ]
+    },
+
+    {
+      "type": "section",
+      "number": "2",
+      "title": "Proposed Framework",
+      "id": "sec:Proposed_Framework"
+    },
+    {
+      "type": "paragraph",
+      "text": "In this section, we discuss the proposed framework, which contains a 3-layer architecture: Data Acquisition and Local Training Layer, Blockchain Layer, and Model Aggregation Layer as visualized in Figure 1."
+    },
+    {
+      "type": "image",
+      "path": "proposed_framework.png",
+      "caption": "Proposed framework",
+      "label": "fig:proposed_framework"
+    },
+
+    {
+      "type": "subsection",
+      "number": "2.A",
+      "title": "Data Acquisition And Local Training Layer",
+      "id": "subsec:data_acquisition"
+    },
+    {
+      "type": "paragraph",
+      "text": "This layer consists of an interface with end-to-end user and managing intelligence at the local client tower."
+    },
+
+    {
+      "type": "subsubsection",
+      "number": "2.A.1",
+      "title": "D2D Request Handling",
+      "id": "subsubsec:d2d_request"
+    },
+    {
+      "type": "paragraph",
+      "text": "When a device (Device 1) sends a request for sharing D2D communication resources with another device (Device 2), it is received by the local client tower. The tower uses its ML models to analyze the request parameters and decides whether the proposed allocation is Optimized or Unoptimized by reaching consensus on the ROS calculated using all 5 models."
+    },
+
+    {
+      "type": "subsubsection",
+      "number": "2.A.2",
+      "title": "Local Model Training",
+      "id": "subsubsec:local_training"
+    },
+    {
+      "type": "paragraph",
+      "text": "At the start, we had a dataset with 1000 rows of Social-Aware-Resource-Allocation data. As part of the FL mechanism, each client represents a local network tower that has 5 ML models: RF, MLP, XGBoost, SVM, and Logistic Regression (LR). We conducted 25 rounds of local training and model aggregation, keeping 70% for training and 30% for testing."
+    },
+    {
+      "type": "paragraph",
+      "text": "LR and MLP models are trained by minimizing the Binary Cross-Entropy (BCE) Loss. Equation (1) calculates BCE Loss:"
+    },
+    {
+      "type": "math",
+      "label": "eq:bce_loss",
+      "number": "(1)",
+      "expression": "L_(\"BCE\") = -1/N sum_(i=1)^N [y_i log(hat(y)_i) + (1-y_i) log(1-hat(y)_i)]",
+      "description": "Where L_BCE is BCE Loss, N is total samples, y_i is true label, hat-y_i is predicted label."
+    },
+
+    {
+      "type": "subsection",
+      "number": "2.B",
+      "title": "Blockchain Layer",
+      "id": "subsec:blockchain_layer"
+    },
+    {
+      "type": "paragraph",
+      "text": "This layer ensures the confidentiality and integrity of the model parameters. Each client trains their local model (LM) using model parameters MP consisting of weights (W_i) and biases (B_i)."
+    },
+    {
+      "type": "math",
+      "label": "eq:cmp",
+      "number": "(2)",
+      "expression": "C_e arrow.r^(\"trains\") L M subset.eq M P",
+      "description": "Each client C_e trains their local model LM using model parameters MP."
+    },
+    {
+      "type": "paragraph",
+      "text": "With this concern, the proposed framework uses IPFS, in which each client stores their updated weights and biases across all 25 rounds. IPFS generates a content identifier (CID) for the uploaded data, and only this CID is stored in the HFB."
+    },
+    {
+      "type": "math",
+      "label": "eq:GMB",
+      "number": "(3)",
+      "expression": "G M = 1/N sum_(i=1)^N W B",
+      "description": "Global model GM aggregated from weights and biases of all N clients."
+    },
+    {
+      "type": "algorithm",
+      "label": "alg:algo1",
+      "caption": "Client and server interaction with the HFB",
+      "input": "Upload model parameters (WB) of server and local clients to the Hyperledger Fabric Blockchain (HFB)",
+      "output": "Access model parameters WB from IPFS and HFB",
+      "steps": [
+        "Procedure UploadModelP(ctx, clientID, WB, serverID)",
+        "  While (True)",
+        "    If (UserID == clientID)",
+        "      clientID -> stores WB to IPFS",
+        "      IPFS -> returns CID_WB",
+        "      data -> C_ce, CID_WB, Ts",
+        "      ctx.stub.putState(C_ce), JSON.stringify(data) -> HFB",
+        "    Else If (UserID == serverID)",
+        "      serverID -> stores GWB to IPFS",
+        "      IPFS -> returns CID_GWB",
+        "      ctx.stub.putState(S_ce), JSON.stringify(GM) -> HFB",
+        "    End If",
+        "  End While",
+        "End Procedure",
+        "",
+        "Procedure GetModelParams(ctx, clientID, serverID)",
+        "  While (True)",
+        "    If (UserID == clientID)",
+        "      ctx.stub.getState(GM) -> HFB",
+        "      clientID -> receives CID_GWB from GM",
+        "      IPFS returns GWB -> ClientID",
+        "    Else If (UserID == serverID)",
+        "      ctx.stub.getStateByClientID(WB) -> HFB",
+        "      serverID -> receives CID_WB from all clientID",
+        "      IPFS returns WB -> for each clientID",
+        "    End If",
+        "  End While",
+        "End Procedure"
+      ]
+    },
+
+    {
+      "type": "section",
+      "number": "3",
+      "title": "Results and Discussions",
+      "id": "sec:Results"
+    },
+    {
+      "type": "paragraph",
+      "text": "This section describes the performance of the proposed framework evaluated in two parts: federated learning performance assessed using accuracy, F1-score, AUC, precision, and recall; and blockchain performance assessed using throughput and latency."
+    },
+
+    {
+      "type": "subsection",
+      "number": "3.A",
+      "title": "Federated Learning Evaluation",
+      "id": "subsec:fl_eval"
+    },
+    {
+      "type": "paragraph",
+      "text": "FL is evaluated in many phases including ROS, predicted probability, stacked contribution to ROS, and global model performance. Based on this performance, we can conclude that our client provides resources to only optimal connections."
+    },
+
+    {
+      "type": "subsubsection",
+      "number": "3.A.1",
+      "title": "Resource Optimization Score (ROS)",
+      "id": "subsubsec:ros"
+    },
+    {
+      "type": "paragraph",
+      "text": "The ROS is calculated as described in the previous section. Different models exhibit different ROS spread. It shows that SVM and Logistic Regression report the highest ROS values."
+    },
+
+    {
+      "type": "subsubsection",
+      "number": "3.A.2",
+      "title": "Global Model Performance",
+      "id": "subsubsec:global_perf"
+    },
+    {
+      "type": "paragraph",
+      "text": "The global model performance is demonstrated through accuracy, F1-score, AUC, recall, and precision for 100 devices. XGBoost and Random Forest show more than 95% across all evaluation criteria. FedAvg takes a weighted step towards each client local update as per Equation (4)."
+    },
+    {
+      "type": "math",
+      "label": "eq:fedavg_compact",
+      "number": "(4)",
+      "expression": "w_(t+1) = w_t + sum_(k=1)^K n_k/n (w_t^k - w_t)",
+      "description": "FedAvg: w_t is global model at round t, w_t^k is local update on client k, n_k/n is the assigned weight."
+    },
+
+    {
+      "type": "subsection",
+      "number": "3.B",
+      "title": "Blockchain-Based Assessment",
+      "id": "subsec:blockchain_eval"
+    },
+    {
+      "type": "paragraph",
+      "text": "The blockchain performance is assessed using throughput and latency via Hyperledger Caliper. HF was configured with two organizations and 2 orderer nodes. The proposed framework confirms a larger number of transactions per second due to the smaller size of transactions, resulting in higher throughput than a conventional blockchain-based system."
+    },
+    {
+      "type": "paragraph",
+      "text": "The proposed framework saves only the CID instead of the entire WB file. It results in a smaller transaction payload, reducing propagation and transmission delay to write data to the HFB. As a result, it achieves better latency than a conventional blockchain system."
+    },
+
+    {
+      "type": "section",
+      "number": "4",
+      "title": "Conclusion and Future Works",
+      "id": "sec:conclusion_future_works"
+    },
+    {
+      "type": "paragraph",
+      "text": "In this paper, we presented FedChain, a secure and decentralized blockchain-enabled FL framework for resource allocation in D2D communication networks. By integrating HF with FL and utilizing IPFS for off-chain parameter storage, FedChain addresses the critical challenges of privacy leakage, single-point failures, and model tampering. Experimental evaluations indicate that FedChain achieves over 95% model accuracy with improved robustness, convergence stability, and security."
+    },
+    {
+      "type": "paragraph",
+      "text": "In the future, we aim to extend FedChain to larger and more heterogeneous D2D networks and conduct experiments under dynamic network conditions that better reflect real-world scenarios. We also aim to integrate lightweight privacy-preserving mechanisms to further improve robustness and deployment efficiency."
+    }
+  ],
+  "references": [
+    {
+      "id": "Shamaei2024InterferenceAwareRA",
+      "authors": "A. Shamaei et al.",
+      "title": "Interference-Aware Resource Allocation in D2D-Enabled Cellular Networks",
+      "venue": "IEEE Transactions on Wireless Communications",
+      "year": "2024"
+    },
+    {
+      "id": "Kamruzzaman2024MachineLR",
+      "authors": "M. Kamruzzaman et al.",
+      "title": "Machine Learning Based Resource Allocation in 5G Networks",
+      "venue": "IEEE Access",
+      "year": "2024"
+    },
+    {
+      "id": "MuhammadFahadNoman2024FeDRLD2DFD",
+      "authors": "M. F. Noman et al.",
+      "title": "FeDRL-D2D: Federated Deep Reinforcement Learning for D2D Resource Allocation",
+      "venue": "IEEE Transactions on Network and Service Management",
+      "year": "2024"
+    },
+    {
+      "id": "Guo2023FederatedRL",
+      "authors": "K. Guo et al.",
+      "title": "Federated Reinforcement Learning for Distributed Resource Allocation",
+      "venue": "IEEE Communications Letters",
+      "year": "2023"
+    },
+    {
+      "id": "Zhang2023AdaptiveRA",
+      "authors": "Y. Zhang et al.",
+      "title": "Adaptive Resource Allocation via Blockchain-Secured Federated Learning",
+      "venue": "IEEE Internet of Things Journal",
+      "year": "2023"
+    },
+    {
+      "id": "Cheng2021BlockchainEmpoweredFL",
+      "authors": "R. Cheng et al.",
+      "title": "Blockchain-Empowered Federated Learning: Challenges, Solutions, and Future Directions",
+      "venue": "IEEE Communications Surveys and Tutorials",
+      "year": "2021"
+    },
+    {
+      "id": "Terven2023ACS",
+      "authors": "J. Terven et al.",
+      "title": "A Comprehensive Study of Loss Functions in Deep Learning",
+      "venue": "Archives of Computational Methods in Engineering",
+      "year": "2023"
+    },
+    {
+      "id": "Pinheiro2025TheIO",
+      "authors": "R. Pinheiro et al.",
+      "title": "The Impact of Data Normalization on Machine Learning Performance",
+      "venue": "Expert Systems with Applications",
+      "year": "2025"
+    }
+  ]
+}
