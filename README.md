@@ -38,7 +38,7 @@ Get AI-generated suggestions to rephrase sentences for clarity, conciseness, and
 
 ### 3. Document Scoring
 
-Receive a score for your document based on how well it conforms to the target conference's formatting and structural requirements. The score breaks down into categories: structure completeness, formatting compliance, section ordering, and length guidelines. Helps users quickly understand how "submission-ready" their document is at a glance.
+Receive a score for your document based on how well it conforms to the target conference's formatting and structural requirements. The score breaks down into categories: structure completeness, formatting compliance, section ordering, and length guidelines. Helps users quickly understand how "submission-ready" their document is at a glance.On the basis of score user get to know about where they have to make changes which make their paper standout than others. 
 
 ### 4. Structure Review & Missing Parts Detection
 
